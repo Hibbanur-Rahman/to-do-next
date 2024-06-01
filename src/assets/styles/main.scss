@@ -1,0 +1,15 @@
+main{
+    background-color: rgba(13,7,20,255) !important;
+}
+.container{
+    background-color: rgba(29,24,37,255) !important;
+}
+.add-btn{
+    background-color: #9e78cf !important;
+    &:hover{
+        background-color: #a486cc !important;
+    }
+}
+input{
+    border:2px solid #9e78cf !important;
+}
