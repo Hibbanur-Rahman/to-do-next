@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import axios from "axios";
 import DOMAIN from '../../../environmentsVariables';
-
+import { useRouter } from "next/navigation";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const router=useRouter();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email || !password) {
@@ -22,9 +22,11 @@ const Login = () => {
             const response=await axios.post(`${DOMAIN}/users/login`,{email,password});
             if(response.status===200){
                 toast.success("Login successfull!!");
-                localStorage.setItem('to-do-token',response.data.token);
+                const token=response.data.data.token;
+                localStorage.setItem('to-do-token',token);
                 setEmail('');
                 setPassword('');
+                router.push('/');
             }
         } catch (error) {
             toast.error("Failed to login");
