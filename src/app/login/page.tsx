@@ -12,7 +12,7 @@ const Login = () => {
             Hello Again!
           </h1>
           <p className=" text-slate-200 text-center">
-            Wellcome back you've been missed!
+            Wellcome back you&apos;ve been missed!
           </p>
           <form action="" className="mt-5">
            
