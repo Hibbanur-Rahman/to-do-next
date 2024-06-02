@@ -3,6 +3,7 @@ import connect from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import httpStatusCode from "@/constants/httpStatusCode";
 import bcryptjs from "bcryptjs";
+import jwt from 'jsonwebtoken';
 
 connect();
 export async function POST(req: NextRequest) {
@@ -33,10 +34,13 @@ export async function POST(req: NextRequest) {
             },{status:httpStatusCode.BAD_REQUEST});
         }
 
+        const JWT_SECRET=process.env.JWT_SECRET as string;
+        const token =jwt.sign({user},JWT_SECRET,{expiresIn:'1d'});
+
         return NextResponse.json({
             success:true,
             message:"User is found",
-            data:user
+            data:{user,token}
         },{status:httpStatusCode.OK})
 
     } catch (error: any) {

@@ -13,3 +13,12 @@ main{
 input{
     border:2px solid #9e78cf !important;
 }
+.sign-up{
+    background-color:rgba(13,7,20,255)!important; 
+    button{
+        background-color: #9e78cf !important;
+        &:hover{
+            background-color: #a486cc !important;
+        }
+    }
+}
