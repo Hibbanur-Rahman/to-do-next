@@ -36,7 +36,7 @@ const Login = () => {
             <div className="container p-12 w-9/12 rounded-3xl shadow-2xl flex flex-wrap">
                 <div className="md:w-1/2 lg:w-1/2 w-full">
                     <h1 className="text-white text-center text-4xl mb-3">Hello Again!</h1>
-                    <p className="text-slate-200 text-center">Welcome back, you've been missed!</p>
+                    <p className="text-slate-200 text-center">Welcome back, you&apos;ve been missed!</p>
                     <form onSubmit={handleSubmit} className="mt-5">
                         <label htmlFor="email" className="w-full text-white mb-5 mt-3">Email</label>
                         <input
