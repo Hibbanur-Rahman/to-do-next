@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import '@/assets/styles/main.scss'
+import "@/assets/styles/main.scss";
 const inter = Inter({ subsets: ["latin"] });
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,13 +19,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-         {/* <!--========== Bootstrap icons cdn Link ==========--> */}
-         <link
+        {/* <!--========== Bootstrap icons cdn Link ==========--> */}
+        <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <ToastContainer />
+      </body>
     </html>
   );
 }
