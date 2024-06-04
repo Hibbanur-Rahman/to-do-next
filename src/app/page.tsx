@@ -59,7 +59,7 @@ export default function Home() {
     }
   };
 
-  const handleCompeleteTodo = async (taskItemId: any) => {
+  const handleCompleteTodo = async (taskItemId: any) => {
     try {
       const response = await axios.post(
         `${DOMAIN}/todo/complete-todo`,
@@ -80,6 +80,23 @@ export default function Home() {
       toast.error("Failed to complete task");
     }
   };
+
+  const handleDeleteTodo=async(taskItemId:any)=>{
+    try{
+      const response=await axios.post(`${DOMAIN}/todo/delete-todo`,{taskItemId},{
+        headers:{
+          Authorization:localStorage.getItem('to-do-token')
+        }
+      });
+      if(response.status===httpStatusCode.OK){
+        toast.success('Task deleted successfully');
+        handleViewListTask();
+      }
+    }catch(error){
+      console.log("Error in delete the todo:",error);
+      toast.error("Failed to delete")
+    }
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("to-do-token");
@@ -127,10 +144,10 @@ export default function Home() {
                   <i
                     className="m-0 p-0 bi bi-check-lg w-1/12 text-3xl cursor-pointer hover:text-green-600"
                     onClick={() => {
-                      handleCompeleteTodo(task._id);
+                      handleCompleteTodo(task._id);
                     }}
                   ></i>
-                  <i className="m-0 p-0 bi bi-trash w-1/12 text-2xl cursor-pointer hover:text-red-700"></i>
+                  <i className="m-0 p-0 bi bi-trash w-1/12 text-2xl cursor-pointer hover:text-red-700" onClick={()=>{handleDeleteTodo(task._id)}}></i>
                 </div>
               ))}
           </div>
@@ -142,10 +159,11 @@ export default function Home() {
           <div className="flex flex-wrap w-full">
             {Array.isArray(completedTaskList) &&
               completedTaskList.map((task:any,key) => (
-                <div className="item-to-do flex flex-wrap items-center rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2" key={key} id={task._id}>
-                  <p className="w-10/12 text-green-500 line-through">
+                <div className="item-to-do flex flex-wrap items-center justify-between rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2" key={key} id={task._id}>
+                  <p className=" text-green-500 line-through w-11/12">
                     {task.title}
                   </p>
+                  <i className="m-0 p-0 bi bi-trash w-1/12 text-2xl cursor-pointer hover:text-red-700" onClick={()=>{handleDeleteTodo(task._id)}}></i>
                 </div>
               ))}
           </div>
