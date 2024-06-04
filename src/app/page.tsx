@@ -7,10 +7,14 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import DOMAIN from "../../environmentsVariables";
 import { headers } from "next/headers";
+import httpStatusCode from "@/constants/httpStatusCode";
 export default function Home() {
   const router = useRouter();
   const [taskInput, setTaskInput] = useState("");
   const [taskList, setTaskList] = useState([]);
+  const [completedTaskList, setCompletedTaskList] = useState([]);
+  const [completeCount,setCompleteCount]=useState(0);
+  const [pendingCount,setPendingCount]=useState(0);
 
   const handleAddTask = async () => {
     try {
@@ -24,7 +28,7 @@ export default function Home() {
         }
       );
 
-      if (response.status === 201) {
+      if (response.status === httpStatusCode.CREATED) {
         toast.success("Task added successfully");
         setTaskInput("");
         handleViewListTask();
@@ -43,12 +47,37 @@ export default function Home() {
         },
       });
 
-      if (response.status === 200) {
-        setTaskList(response.data.data.tasks);
+      if (response.status === httpStatusCode.OK) {
+        setTaskList(response.data.data.pendingTask);
+        setCompletedTaskList(response.data.data.completedTask);
+        setCompleteCount(response.data.data.completedTask.length);
+        setPendingCount(response.data.data.pendingTask.length);
       }
     } catch (error) {
       console.log("Error in the viewing task list:", error);
       toast.error("Failed to view list");
+    }
+  };
+
+  const handleCompeleteTodo = async (taskItemId: any) => {
+    try {
+      const response = await axios.post(
+        `${DOMAIN}/todo/complete-todo`,
+        { taskItemId },
+        {
+          headers: {
+            Authorization: localStorage.getItem("to-do-token"),
+          },
+        }
+      );
+
+      if (response.status === httpStatusCode.OK) {
+        toast.success("Task completed successfully");
+        handleViewListTask();
+      }
+    } catch (error) {
+      console.log("Error in the completing task:", error);
+      toast.error("Failed to complete task");
     }
   };
 
@@ -85,15 +114,22 @@ export default function Home() {
 
         {/** to-do-task section */}
         <div className="flex flex-wrap w-full mt-6">
-          <p className="text-white mb-4 mt-4">Tasks to do - 4</p>
+          <p className="text-white mb-4 mt-4">Tasks to do - {pendingCount}</p>
           <div className="flex flex-wrap w-full">
             {Array.isArray(taskList) &&
-              taskList.map((task:any,key) => (
-                <div className="item-to-do flex flex-wrap items-center rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2" key={key}>
-                  <p className="w-10/12">
-                   {task.title}
-                  </p>
-                  <i className="m-0 p-0 bi bi-check-lg w-1/12 text-3xl cursor-pointer hover:text-green-600"></i>
+              taskList.map((task: any, key) => (
+                <div
+                  className="item-to-do flex flex-wrap items-center rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2"
+                  key={key}
+                  id={task._id}
+                >
+                  <p className="w-10/12">{task.title}</p>
+                  <i
+                    className="m-0 p-0 bi bi-check-lg w-1/12 text-3xl cursor-pointer hover:text-green-600"
+                    onClick={() => {
+                      handleCompeleteTodo(task._id);
+                    }}
+                  ></i>
                   <i className="m-0 p-0 bi bi-trash w-1/12 text-2xl cursor-pointer hover:text-red-700"></i>
                 </div>
               ))}
@@ -102,13 +138,16 @@ export default function Home() {
 
         {/**done-task section */}
         <div className="flex flex-wrap w-full mt-6">
-          <p className="text-white mb-4 mt-4">Done - 4</p>
+          <p className="text-white mb-4 mt-4">Done - {completeCount}</p>
           <div className="flex flex-wrap w-full">
-            <div className="item-to-do flex flex-wrap items-center rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2">
-              <p className="w-10/12 text-green-500 line-through">
-                To study React fundaments
-              </p>
-            </div>
+            {Array.isArray(completedTaskList) &&
+              completedTaskList.map((task:any,key) => (
+                <div className="item-to-do flex flex-wrap items-center rounded-lg py-4 px-3 w-full shadow-xl mt-2 mb-2" key={key} id={task._id}>
+                  <p className="w-10/12 text-green-500 line-through">
+                    {task.title}
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
       </div>

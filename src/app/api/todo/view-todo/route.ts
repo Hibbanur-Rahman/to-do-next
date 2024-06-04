@@ -12,7 +12,7 @@ connect();
 export async function GET(req: NextRequest) {
 
     try {
-        
+
         const token = headers().get('authorization');
 
         if (!token) {
@@ -38,10 +38,21 @@ export async function GET(req: NextRequest) {
             }, { status: httpStatusCode.NOT_FOUND });
         }
 
+        const taskList = await TaskModel.findById(user.taskList);
+        if (!taskList) {
+            return NextResponse.json({
+                success: false,
+                message: "Task not found"
+            }, { status: httpStatusCode.NOT_FOUND })
+        }
+        const taskListNew = taskList.tasks.filter((item: any) =>
+            item.isDone != true
+        )
+        const completedTaskList = taskList.tasks.filter((item: any) => item.isDone === true)
         return NextResponse.json({
             success: true,
             message: "Viewed taskList",
-            data: user.taskList
+            data: { pendingTask: taskListNew, completedTask: completedTaskList }
         }, { status: httpStatusCode.OK });
 
     } catch (error: any) {
