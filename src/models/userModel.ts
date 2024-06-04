@@ -9,6 +9,7 @@ interface IUser extends Document {
     forgotPasswordExp?: Date;
     verifyToken?: string;
     verifyExp?: Date;
+    taskList:mongoose.Schema.Types.ObjectId
 }
 
 const UserSchema: Schema = new Schema({
@@ -26,6 +27,10 @@ const UserSchema: Schema = new Schema({
         type: String,
         required: true
     },
+    taskList:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'tasks'
+    },
     isVerify: {
         type: Boolean,
         default: false
@@ -42,7 +47,7 @@ const UserSchema: Schema = new Schema({
     verifyExp: {
         type: Date
     }
-});
+},{timestamps:true});
 
 const User = mongoose.models.users || mongoose.model<IUser>('users', UserSchema);
 export default User;
