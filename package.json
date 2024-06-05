@@ -11,6 +11,7 @@
     "deploy": "next build && gh-pages -d out"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
@@ -19,6 +20,7 @@
     "nodemailer": "^6.9.13",
     "react": "^18",
     "react-dom": "^18",
+    "react-redux": "^9.1.2",
     "react-toastify": "^10.0.5"
   },
   "devDependencies": {
