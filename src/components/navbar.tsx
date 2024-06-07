@@ -5,7 +5,9 @@ const Navbar=()=>{
     return(
         <div className="Navbar w-full flex flex-wrap">
                 <Image src={logo} alt="" className="" style={{height:'80px !important', width:'160px !important'}} />
-                <div className="">
+               
+            {/** =========== Navbar profile ========== */}
+            <div className="">
                     <p className="">Hibbanur Rahman</p>
                     <div className="rounded-lg">
                         <Image src={profile} alt="" />
