@@ -8,7 +8,8 @@ import axios from "axios";
 import DOMAIN from "../../environmentsVariables";
 import httpStatusCode from "@/constants/httpStatusCode";
 import loadingGif from "@/assets/images/loading-gif.gif";
-import loadingGif1 from '@/assets/images/loading-gif-1.gif';
+import Navbar from "@/components/navbar";
+
 export default function Home() {
   const router = useRouter();
   const [taskInput, setTaskInput] = useState("");
@@ -110,13 +111,20 @@ export default function Home() {
     if (!token) {
       toast.error("login first");
       router.push("/login");
+    } else {
+      handleViewListTask();
     }
-    handleViewListTask();
+
+    return () => {
+      // Any necessary cleanup
+    };
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 lg:p-24 p-5">
-      <div className="container md:w-5/12 lg:w-5/12 w-full rounded-2xl p-6 shadow-2xl">
+    <main className="flex min-h-screen flex-col items-center ">
+      <Navbar />
+
+      <div className="mt-8 container md:w-5/12 lg:w-5/12 w-full rounded-2xl p-6 shadow-2xl">
         <div className="w-full flex flex-wrap justify-between">
           <input
             type="text"
@@ -138,7 +146,7 @@ export default function Home() {
 
         {isLoading ? (
           <div className="flex w-full flex-wrap items-center justify-center mt-28 mb-20">
-            <Image src={loadingGif} alt='' style={{height:'100px !important',width:'100px !important'}} className=""/>
+            <Image src={loadingGif} alt="" style={{ height: '100px', width: '100px' }} />
           </div>
         ) : (
           <>

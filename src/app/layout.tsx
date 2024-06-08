@@ -24,10 +24,21 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
         />
+
+        {/* <!--========== flowbite cdn Link ==========-->
+        <link
+          href="https://unpkg.com/flowbite@latest/dist/flowbite.min.css"
+          rel="stylesheet"
+        /> */}
       </head>
       <body className={inter.className}>
         {children}
         <ToastContainer />
+        {/* <!--========== flowbite cdn Link ==========--> */}
+        {/* <script
+          src="https://unpkg.com/flowbite@latest/dist/flowbite.js"
+          async
+        ></script> */}
       </body>
     </html>
   );
